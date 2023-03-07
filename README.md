@@ -22,7 +22,7 @@ Edit the `index.js` file:
 # + Change job label { "job": "cloudflare-logpush-http-requests" } in src/index.js as needed
 ```
 
-https://beautifier.io/
+
 ```
 export default {
     async fetch(request, env, ctx) {
