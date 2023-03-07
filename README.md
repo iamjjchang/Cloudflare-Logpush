@@ -1,14 +1,14 @@
-## Cloudflare Logpush to Grafana Loki Endpoint
+# Cloudflare Logpush to Grafana Loki Endpoint
 
 [Cloudflare Logpush](https://developers.cloudflare.com/logs/about/)
 
-# Set up Grafana
+## Set up Grafana
 
 Go to [Grafana](https://grafana.com/) and set up a free account. \
 Alternatively, you can host your own instance of Grafana [Install Grafana on Ubuntu](https://iamjjchang.github.io/Install-Grafana-on-Ubuntu/)
 
 
-# Create a Worker
+## Create a Worker
 
 Create a new Worker with [Cloudflare Wrangler](https://developers.cloudflare.com/workers/wrangler/commands/)
 
@@ -87,19 +87,19 @@ export default {
 };
 ```
 
-# Wrangler secret
+## Wrangler secret
 ```
 wrangler secret put LOKI_USER # 3XXXXX
 wrangler secret put LOKI_API_KEY # eyJxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 wrangler secret put LOKI_HOST # logs-prod-0xxxxx.grafana.net
 ```
 
-# Upload the Worker
+## Upload the Worker
 ```
 wrangler publish
 ```
 
-# Logpush \
+## Logpush \
 Get Log Fields
 ```
 curl -s \
@@ -129,7 +129,7 @@ WAFProfile,WAFRCEAttackScore,WAFRuleID,WAFRuleMessage,WAFSQLiAttackScore,WAFXSSA
 WorkerStatus,WorkerSubrequest,WorkerSubrequestCount,WorkerWallTimeUs,ZoneName
 ```
 
-# Create Logpush Job \ 
+## Create Logpush Job \ 
 Variables
 ```
 export ZONE_ID=yourzoneid.com
@@ -153,14 +153,14 @@ curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/logpush/job
 }' 
 ```
 
-# Test explorer on Grafana Loki
+## Test explorer on Grafana Loki
 ```
 {job="<YOUR_LOKI_JOB_NAME>"} | json | __error__ = ""
 ```
 
-## Troubleshooting
+# Troubleshooting
 
-# Test Grafana Loki endpoint
+## Test Grafana Loki endpoint
 Make you can first query your Grafana Loki endpoint
 ```
 export LOKI_USER=3XXXXX
@@ -171,7 +171,7 @@ curl -v -H "Content-Type: application/json" -XPOST -s \
 '{"streams": [{ "stream": { "foo": "bar2" }, "values": [ [ "1677514484485207000", "fizzbuzz" ] ] }]}'
 ```
 
-# Test worker endpoint
+## Test worker endpoint
 Use command **wrangler tail** to view live logs or login to dashboard and view worker log stream
 ```
 curl "https://loki_logpush.myworker.workers.dev" -X POST \
@@ -185,7 +185,7 @@ curl -s -H "X-Auth-Email:<YOUR_EMAIL>" -H "X-Auth-Key:<GLOBAL_API_KEY>" GET "htt
 /v4/zones/<ZONE_ID>/logs/control/retention/flag" | jq .
 ```
 
-# Enable Log Retention
+## Enable Log Retention
 ```
 curl -s -H "X-Auth-Email:<YOUR_EMAIL>" -H "X-Auth-Key:<GLOBAL_API_KEY>" POST "https://api.cloudflare.com/client
 /v4/zones/<ZONE_ID>/logs/control/retention/flag" -d'{"flag":true}' | jq .
